@@ -1,0 +1,30 @@
+* {
+	margin: auto;
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	background-color: lightgray
+}
+
+.block {
+	width: 49px;
+	height: 49px;
+	border: 1px solid black;
+}
+
+.player {
+	background-color: #D75900;
+}
+
+#playBackground {
+	width: 1024px;
+	height: 805px;
+	background-color: gray
+}
+
+#playArea {
+	margin:10px;
+	float: left;
+}

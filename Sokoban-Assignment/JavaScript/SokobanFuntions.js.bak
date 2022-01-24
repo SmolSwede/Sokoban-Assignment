@@ -1,0 +1,4 @@
+
+const playArea = document.getElementById("playArea");
+
+var player
