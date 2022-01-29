@@ -1,12 +1,23 @@
 const playArea = document.getElementById("playArea");
-document.body.addEventListener('keydown', keyPress);
+const winText = document.getElementById("winText");
+document.body.addEventListener('keydown', KeyPress);
 
-var P = {x: -1, y: -1};
+var Player = {x: -1, y: -1};
 var tileType;
-var boxCollection = [];
-let boxIteration = 0;
-var boxPos = {x: -1, y: -1};
+var goalPos = " ";
+var goalList = [];
+var pointsList = [0,0,0,0,0,0];
+var points = 0;
 
+var arrow_keys_handler = function(e) {
+  switch(e.code){
+      case "ArrowUp": case "ArrowDown": case "ArrowLeft": case "ArrowRight":
+         e.preventDefault(); break;
+      default: break;
+  }
+};
+
+window.addEventListener("keydown", arrow_keys_handler, false);
 
 /*   Enum of CSS Classes for the static elements   */
 var Tiles = {
@@ -372,350 +383,7 @@ var tileMap01 = {
   ],
 };
 
-var tileMap02 = {
-  width: 19,
-  height: 16,
-  mapGrid: [
-    [
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-    ],
-    [
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-    ],
-    [
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-    ],
-    [
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-    ],
-    [
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["W"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["W"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-    ],
-    [
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["W"],
-      ["B"],
-      ["A"],
-      ["A"],
-      ["W"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-    ],
-    [
-      ["A"],
-      ["A"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["A"],
-      ["A"],
-      ["B"],
-      ["W"],
-      ["W"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-    ],
-    [
-      ["A"],
-      ["A"],
-      ["W"],
-      ["A"],
-      ["A"],
-      ["B"],
-      ["A"],
-      ["B"],
-      ["A"],
-      ["W"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-    ],
-    [
-      ["W"],
-      ["W"],
-      ["W"],
-      ["A"],
-      ["W"],
-      ["A"],
-      ["W"],
-      ["W"],
-      ["A"],
-      ["W"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["W"],
-    ],
-    [
-      ["W"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["W"],
-      ["A"],
-      ["W"],
-      ["W"],
-      ["A"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["A"],
-      ["A"],
-      ["G"],
-      ["G"],
-      ["W"],
-    ],
-    [
-      ["W"],
-      ["A"],
-      ["B"],
-      ["A"],
-      ["A"],
-      ["B"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["G"],
-      ["G"],
-      ["W"],
-    ],
-    [
-      ["W"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["A"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["A"],
-      ["W"],
-      ["P"],
-      ["W"],
-      ["W"],
-      ["A"],
-      ["A"],
-      ["G"],
-      ["G"],
-      ["W"],
-    ],
-    [
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["W"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["W"],
-    ],
-    [
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["W"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-    ],
-    [
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-    ],
-    [
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-      ["A"],
-    ],
-  ],
-};
-
-function renderMap() 
+function RenderMap() 
 {
 	for(let col=0; col < tileMap01.height; col++)
 	{
@@ -726,19 +394,15 @@ function renderMap()
 			if(tileMap01.mapGrid[col][row][0] !== " ")
 			{
 				tileType = tileMap01.mapGrid[col][row][0];
-				if(tileType === "B")
-				{
-					boxPos.x = row;
-					boxPos.y = col;
-
-					boxCollection.push(boxPos);
-					boxIteration++
-				}
 				if(tileType === "P")
 				{
-					P.x = col;
-					P.y = row;
+					Player.x = col;
+					Player.y = row;
 				}
+        if(tileType === "G")
+        {
+          goalList.push("x" + row +"y" + col)
+        }
 				element.classList.add(tileType);
 			}
 			element.id = "x" + row + "y" + col;
@@ -747,25 +411,27 @@ function renderMap()
 	}
 }
 
-
-function keyPress(e)
+function KeyPress(e)
 {
+  console.log(points)
+  console.log(goalPos)
+  console.log(goalList)
   switch(e.key)
   {
     case 'ArrowUp':
-      movePlayer(0, -1)
+      MovePlayer(0, -1)
     break;
 
     case 'ArrowDown':
-      movePlayer(0, 1)
+      MovePlayer(0, 1)
     break;
 
     case 'ArrowLeft':
-      movePlayer(-1, 0)
+      MovePlayer(-1, 0)
     break;
 
     case 'ArrowRight':
-      movePlayer(1, 0)
+      MovePlayer(1, 0)
     break;
 
     default:
@@ -773,39 +439,59 @@ function keyPress(e)
   }
 }
 
-function movePlayer(x, y)
+function MovePlayer(x, y)
 {
-  var newPx = P.x + x;
-  var newPy = P.y + y;
-  var newBx = P.x + (x*2);
-  var newBy = P.y + (y*2);
+  WinCondition();
+  var newPlayerX = Player.x + x;
+  var newPlayerY = Player.y + y;
+  var newBoxX = Player.x + (x*2);
+  var newBoxY = Player.y + (y*2);
+  var playerElement = document.getElementById("x" + Player.x + "y" + Player.y);
+  var destination = document.getElementById("x" + newPlayerX + "y" + newPlayerY);
+  var boxDestination = document.getElementById("x" + newBoxX + "y" + newBoxY);
 
-  var playerElement = document.getElementById("x" + P.x + "y" + P.y);
-  var destination = document.getElementById("x" + newPx + "y" + newPy);
-  var boxDestination = document.getElementById("x" + newBx + "y" + newBy);
-  var tileCompare = tileMap01.mapGrid[newPy][newPx][0];
-
-  if(tileCompare !== "W" && tileCompare !== "B")
+  if(!destination.classList.contains("W") && !destination.classList.contains("B"))
   {
 
     playerElement.classList.remove("P");
     destination.classList.add("P");
-    P.x = newPx;
-    P.y = newPy;
+    Player.x = newPlayerX;
+    Player.y = newPlayerY;
   }
-  else if(tileCompare === "B")
+  else if(destination.classList.contains("B"))
   {
-    console.log(destination.x, destination.y, newPx, newPy)
-    tileMap01.mapGrid[newPx][newPy].splice(0, 1, "P");
-    tileMap01.mapGrid[newBx][newBy].splice(0, 1, "B");
-    console.log(tileCompare);
-    destination.classList.remove("B");
-    boxDestination.classList.add("B");
-    playerElement.classList.remove("P");
-    destination.classList.add("P");
-    P.x = newPx;
-    P.y = newPy;
+    if(!boxDestination.classList.contains("W") && !boxDestination.classList.contains("B"))
+    {
+        playerElement.classList.remove("P");
+        destination.classList.add("P");
+        destination.classList.remove("B");
+        Player.x = newPlayerX;
+        Player.y = newPlayerY;
+        boxDestination.classList.add("B");
+    }
   }
 }
 
-renderMap();
+function WinCondition()
+{
+  for(let i = 0; i < goalList.length; i++)
+  {
+    goalPos = document.getElementById(goalList[i]);
+    if(goalPos.classList.contains("B"))
+    {
+      pointsList[i] = 1;
+    }
+    else
+    {
+      pointsList[i] = 0;
+    }
+  }
+  points = pointsList.reduce((a, b) => a + b, 0);
+  if(points >= 6)
+  {
+    playArea.classList.add("Win")
+    winText.classList.remove("hideText")
+  }
+}
+
+RenderMap();

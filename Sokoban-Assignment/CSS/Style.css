@@ -3,6 +3,17 @@
 	box-sizing: border-box;
 }
 
+#playBackground {
+	width: 952px;
+	height: 805px;
+	background-color: #999999;
+}
+
+#playArea {
+	margin:10px;
+	float: left;
+}
+
 body {
 	margin: 0;
 	background-color: #bcbcbc;
@@ -13,6 +24,10 @@ body {
 	width: 49px;
 	height: 49px;
 	/*border: 1px solid #000000;*/
+}
+
+.G {
+	background-color: #f1c232;
 }
 
 .W {
@@ -27,17 +42,11 @@ body {
 	background-color: #D75900;
 }
 
-.G {
-	background-color: #f1c232;
+.Win {
+	background-color: #00ffbf;
+	text-align: center;
 }
 
-#playBackground {
-	width: 952px;
-	height: 805px;
-	background-color: #999999;
-}
-
-#playArea {
-	margin:10px;
-	float: left;
+.hideText {
+	font-size: 0px;
 }
